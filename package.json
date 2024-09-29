@@ -7,15 +7,14 @@
  "scripts": {
   "start": "node index.js"
  },
- "author": "FXastro",
+ "author": "AstroX10",
  "license": "",
  "dependencies": {
   "@hapi/boom": "^10.0.1",
   "@types/node": "^18.0.6",
-  "baileys": "github:FXastro/Baileys",
+  "baileys": "git+https://github.com/AstroX10/Baileys",
   "cors": "^2.8.5",
   "express": "^4.18.2",
-  "node-fetch": "^3.2.6",
   "path": "^0.12.7",
   "pastedeno": "*",
   "pino": "^8.15.1"
