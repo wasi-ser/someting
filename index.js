@@ -29,8 +29,11 @@ const deleteSessionFolder = () => {
 
 deleteSessionFolder();
 
-app.get("/code", (req, res) => res.sendFile(path.join(__dirname, "pair.html")));
+app.use(express.static(path.join(__dirname, 'public')));
 
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 app.get("/pair", async (req, res) => {
   const { phone } = req.query;
   if (!phone) return res.json({ error: "Please Provide Phone Number" });
