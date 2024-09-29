@@ -1,22 +1,25 @@
 {
- "name": "fx-pair",
- "version": "1.0.2",
- "description": "",
- "main": "index.js",
- "type": "module",
- "scripts": {
-  "start": "node index.js"
- },
- "author": "AstroX10",
- "license": "",
- "dependencies": {
-  "@hapi/boom": "^10.0.1",
-  "@types/node": "^18.0.6",
-  "baileys": "git+https://github.com/AstroX10/Baileys",
-  "cors": "^2.8.5",
-  "express": "^4.18.2",
-  "path": "^0.12.7",
-  "pastedeno": "*",
-  "pino": "^8.15.1"
- }
+  "name": "fx-pair",
+  "version": "1.0.2",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "AstroX10",
+  "license": "",
+  "dependencies": {
+    "@hapi/boom": "^10.0.1",
+    "@types/node": "^18.0.6",
+    "baileys": "git+https://github.com/AstroX10/Baileys",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "path": "^0.12.7",
+    "pastedeno": "*",
+    "pino": "^8.15.1"
+  },
+  "engines": {
+    "node": "20.x"
+  }
 }
