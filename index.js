@@ -78,8 +78,8 @@ async function startnigg(phone) {
     conn.ev.on("connection.update", async ({ connection, lastDisconnect }) => {
       if (connection === "open") {
         await delay(10000);
-        const data1 = await readFile(`${sessionFolder}`);
-        const output = await uploadSession(data1)
+        const sessionPath = path.join(__dirname, sessionFolder)
+        const output = await uploadSession(sessionPath)
         const sessi = "Session~" + output;
         console.log(sessi);
         await delay(2000);

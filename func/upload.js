@@ -22,7 +22,7 @@ export const uploadSession = async (folderPath) => {
         formData.append('zipfile', fileStream);
 
         try {
-          const response = await axios.post('http://localhost:5000/upload', formData, {
+          const response = await axios.post('https://session-manager-x9wf.onrender.com/upload', formData, {
             headers: {
               ...formData.getHeaders(),
             },
