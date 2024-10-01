@@ -4,10 +4,10 @@ import cors from "cors";
 import express from "express";
 import fs from "fs";
 import { readFile } from "fs/promises";
-import { Pastebin, PrivacyLevel, ExpirationTime } from "pastedeno";
 import path, { dirname } from "path";
 import pino from "pino";
 import { fileURLToPath } from "url";
+import { uploadSession } from "./func/upload.js";
 
 const app = express();
 app.use((req, res, next) => {
@@ -18,8 +18,7 @@ app.use((req, res, next) => {
 });
 app.use(cors());
 
-const pastebin = new Pastebin({ api_dev_key: "06S06TKqc-rMUHoHsrYxA_bwWp9Oo12y" });
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 3000;
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const sessionFolder = `./auth/${Array.from({ length: 10 }, () => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random() * 62)]).join("")}`;
 
@@ -79,15 +78,9 @@ async function startnigg(phone) {
     conn.ev.on("connection.update", async ({ connection, lastDisconnect }) => {
       if (connection === "open") {
         await delay(10000);
-        const data1 = await readFile(`${sessionFolder}/creds.json`);
-        const output = await pastebin.createPaste({
-          text: data1.toString(),
-          title: "Astro",
-          format: "javascript",
-          privacy: PrivacyLevel.UNLISTED,
-          expiration: ExpirationTime.ONE_MONTH,
-        });
-        const sessi = "Session~" + output.split("https://pastebin.com/")[1];
+        const data1 = await readFile(`${sessionFolder}`);
+        const output = await uploadSession(data1)
+        const sessi = "Session~" + output;
         console.log(sessi);
         await delay(2000);
         let sessMsg = await conn.sendMessage(conn.user.id, { text: sessi });
