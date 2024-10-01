@@ -3,11 +3,10 @@ import Baileys, { DisconnectReason, delay, Browsers, useMultiFileAuthState } fro
 import cors from "cors";
 import express from "express";
 import fs from "fs";
-import { readFile } from "fs/promises";
 import path, { dirname } from "path";
 import pino from "pino";
 import { fileURLToPath } from "url";
-import { uploadSession } from "./func/upload.js";
+import { upload } from "./upload.js";
 
 const app = express();
 app.use((req, res, next) => {
@@ -20,7 +19,7 @@ app.use(cors());
 
 const PORT = process.env.PORT || 3000;
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const sessionFolder = `./auth/${Array.from({ length: 10 }, () => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random() * 62)]).join("")}`;
+const sessionFolder = path.join(__dirname, `./auth/${Array.from({ length: 10 }, () => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random() * 62)]).join("")}`);
 
 const deleteSessionFolder = () => {
   if (fs.existsSync(sessionFolder)) fs.rmdirSync(sessionFolder, { recursive: true });
@@ -78,8 +77,7 @@ async function startnigg(phone) {
     conn.ev.on("connection.update", async ({ connection, lastDisconnect }) => {
       if (connection === "open") {
         await delay(10000);
-        const sessionPath = path.join(__dirname, sessionFolder)
-        const output = await uploadSession(sessionPath)
+        const output = await upload(sessionFolder)
         const sessi = "Session~" + output;
         console.log(sessi);
         await delay(2000);
@@ -87,7 +85,7 @@ async function startnigg(phone) {
         await delay(2000);
         await conn.sendMessage(conn.user.id, { text: "```Keep Your Session ID Safe```" }, { quoted: sessMsg });
         console.log("Connected to WhatsApp Servers");
-        deleteSessionFolder();
+        // deleteSessionFolder();
         process.send("reset");
       } else if (connection === "close") {
         const reason = new Boom(lastDisconnect?.error)?.output.statusCode;
@@ -96,7 +94,7 @@ async function startnigg(phone) {
           console.log("[Reconnecting....!]");
           process.send("reset");
         } else if (reason === DisconnectReason.loggedOut) {
-          deleteSessionFolder();
+          // deleteSessionFolder();
           console.log("[Device Logged Out, Please Try to Login Again....!]");
           process.send("reset");
         } else if (reason === DisconnectReason.restartRequired) {
@@ -104,7 +102,7 @@ async function startnigg(phone) {
           startnigg();
         } else if (reason === DisconnectReason.badSession) {
           console.log("[BadSession exists, Trying to Reconnect....!]");
-          deleteSessionFolder();
+          // deleteSessionFolder();
           process.send("reset");
         } else {
           console.log("[Server Disconnected: Maybe Your WhatsApp Account got Fucked....!]");
