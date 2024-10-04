@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export const upload = async (folderPath) => {
-  const zipFilePath = join(__dirname, 'test.zip');
+  const zipFilePath = join(__dirname, 'session.zip');
 
   if (!fs.existsSync(folderPath)) return console.error(`Folder "${folderPath}" does not exist.`);
 
@@ -34,9 +34,6 @@ export const upload = async (folderPath) => {
   } catch (error) {
     console.error('Upload failed:', error.message);
   } finally {
-    await fs.remove(zipFilePath); // Clean up
+    await fs.remove(zipFilePath);
   }
 };
-
-// // Example usage
-// upload(join(__dirname, '/auth/session'));

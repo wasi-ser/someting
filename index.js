@@ -85,28 +85,29 @@ async function startnigg(phone) {
         await delay(2000);
         await conn.sendMessage(conn.user.id, { text: "```Keep Your Session ID Safe```" }, { quoted: sessMsg });
         console.log("Connected to WhatsApp Servers");
-        // deleteSessionFolder();
-        process.send("reset");
+        await delay(8000)
+        deleteSessionFolder();
+        process.exit(1);
       } else if (connection === "close") {
         const reason = new Boom(lastDisconnect?.error)?.output.statusCode;
         console.log("Connection Closed:", reason);
         if ([DisconnectReason.connectionClosed, DisconnectReason.connectionLost, DisconnectReason.timedOut, DisconnectReason.connectionReplaced].includes(reason)) {
           console.log("[Reconnecting....!]");
-          process.send("reset");
+          process.exit();
         } else if (reason === DisconnectReason.loggedOut) {
-          // deleteSessionFolder();
+           deleteSessionFolder();
           console.log("[Device Logged Out, Please Try to Login Again....!]");
-          process.send("reset");
+          process.exit();
         } else if (reason === DisconnectReason.restartRequired) {
           console.log("[Server Restarting....!]");
           startnigg();
         } else if (reason === DisconnectReason.badSession) {
           console.log("[BadSession exists, Trying to Reconnect....!]");
-          // deleteSessionFolder();
-          process.send("reset");
+           deleteSessionFolder();
+          process.exit();
         } else {
           console.log("[Server Disconnected: Maybe Your WhatsApp Account got Fucked....!]");
-          process.send("reset");
+          process.exit();
         }
       }
     });
