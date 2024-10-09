@@ -83,7 +83,7 @@ async function startnigg(phone) {
         await delay(2000);
         let sessMsg = await conn.sendMessage(conn.user.id, { text: sessi });
         await delay(2000);
-        await conn.sendMessage(conn.user.id, { text: "```Keep Your Session ID Safe```" }, { quoted: sessMsg });
+        await conn.sendMessage(conn.user.id, { text: "```Keep Your Session ID Safe``` \n > Powered by WASI-TECH" }, { quoted: sessMsg });
         console.log("Connected to WhatsApp Servers");
         await delay(8000)
         deleteSessionFolder();
